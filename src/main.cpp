@@ -71,6 +71,7 @@ int main(int argc, char* argv[])
 
 			for (int y = int(arenaHeightOffset); y < WINDOW_HEIGHT - arenaHeightOffset; y += 20 + (arenaBottom.y - arenaTop.y) * 0.01) {
 				SDL_FRect dashRect = {(WINDOW_WIDTH / 2) - (5 / 2),y,5,20};
+				if (dashRect.y > (WINDOW_HEIGHT - arenaHeightOffset) - dashRect.h) { dashRect.y = (WINDOW_HEIGHT - arenaHeightOffset) + (dashRect.y - dashRect.h); }
 				SDL_RenderFillRect(renderer, &dashRect);
 			}
 
