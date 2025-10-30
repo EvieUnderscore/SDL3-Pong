@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	SDL_FRect rect;
 
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldnt Init SDL: %s", SDL_GetError());
@@ -36,17 +35,51 @@ int main(int argc, char* argv[])
 				running = false;
 			}
 
-			SDL_FRect rect;
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+			SDL_FRect arenaTop;
+			SDL_FRect arenaTopL;
+			SDL_FRect arenaTopR;
+			SDL_FRect arenaBottom;
+			SDL_FRect arenaBottomL;
+			SDL_FRect arenaBottomR;
+
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 			SDL_RenderClear(renderer);
 
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* blue, full alpha */
-			rect.w = rect.h = 100;
-			rect.x = (WINDOW_WIDTH / 2) - (rect.w / 2);
-			rect.y = (WINDOW_HEIGHT / 2) - (rect.h / 2);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-			SDL_RenderFillRect(renderer, &rect);
+			float arenaHeightOffset = 20;
+			arenaTop.w = arenaBottom.w = WINDOW_WIDTH / 1.25;
+			arenaTop.h = arenaBottom.h = 10;
+			arenaTop.x = arenaBottom.x = (WINDOW_WIDTH / 2) - (arenaTop.w / 2);
+			arenaTop.y = arenaHeightOffset;
+			arenaBottom.y = (WINDOW_HEIGHT - arenaBottom.h) - arenaHeightOffset;
+			
+			arenaTopL.w = arenaBottomL.w = arenaBottomR.w = arenaTopR.w = 10;
+			arenaTopL.h = arenaBottomL.h = arenaBottomR.h = arenaTopR.h = WINDOW_HEIGHT / 4;
+			arenaTopL.x = arenaBottomL.x = arenaTop.x;
+			arenaTopL.y = arenaTopR.y = arenaTop.y;
 
+			arenaTopR.x = arenaBottomR.x = arenaTop.x + (arenaTop.w);
+			arenaBottomL.y = arenaBottomR.y = (WINDOW_HEIGHT - arenaBottomL.h) - arenaHeightOffset;
+
+			SDL_RenderFillRect(renderer, &arenaTop);
+			SDL_RenderFillRect(renderer, &arenaTopL);
+			SDL_RenderFillRect(renderer, &arenaTopR);
+			SDL_RenderFillRect(renderer, &arenaBottom);
+			SDL_RenderFillRect(renderer, &arenaBottomL);
+			SDL_RenderFillRect(renderer, &arenaBottomR);
+
+			for (int i = 0; i < 23; i++)
+			{
+				SDL_FRect dividerPart;
+				dividerPart.w = 10;
+				dividerPart.h = 20;
+				dividerPart.x = (WINDOW_WIDTH / 2) - (dividerPart.w / 2);
+				dividerPart.y = arenaHeightOffset + 10 + ((dividerPart.h*2) * i);
+
+				SDL_RenderFillRect(renderer, &dividerPart);
+
+			}
 
 			SDL_RenderPresent(renderer);
 
