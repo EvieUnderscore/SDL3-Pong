@@ -69,16 +69,9 @@ int main(int argc, char* argv[])
 			SDL_RenderFillRect(renderer, &arenaBottomL);
 			SDL_RenderFillRect(renderer, &arenaBottomR);
 
-			for (int i = 0; i < 23; i++)
-			{
-				SDL_FRect dividerPart;
-				dividerPart.w = 10;
-				dividerPart.h = 20;
-				dividerPart.x = (WINDOW_WIDTH / 2) - (dividerPart.w / 2);
-				dividerPart.y = arenaHeightOffset + 10 + ((dividerPart.h*2) * i);
-
-				SDL_RenderFillRect(renderer, &dividerPart);
-
+			for (int y = int(arenaHeightOffset); y < WINDOW_HEIGHT - arenaHeightOffset; y += 20 + (arenaBottom.y - arenaTop.y) * 0.01) {
+				SDL_FRect dashRect = {(WINDOW_WIDTH / 2) - (5 / 2),y,5,20};
+				SDL_RenderFillRect(renderer, &dashRect);
 			}
 
 			SDL_RenderPresent(renderer);
